@@ -4,16 +4,16 @@
 
 ;;; "hyperfest" goes here. Hacks and glory await!
 
+(defparameter *site-acceptor* nil)
+
 (defun hf-start (&optional port)
-  (let ((the-port (or port
-                      8080)))
-    (defun resource-path (x)
-      (truename
-       (asdf:system-relative-pathname :hyperfest x)))
-    (setq *site-acceptor*
-          (make-instance 'hunchentoot:easy-acceptor
-                         :port the-port
-                         :document-root (resource-path "./hyperspec")))
+  (let* ((the-port (or port 8080))
+         (*site-acceptor* (make-instance 'hunchentoot:easy-acceptor
+                                         :port the-port
+                                         :document-root
+                                         (truename
+                                          (asdf:system-relative-pathname
+                                           :hyperfest "./hyperspec")))))
     (hunchentoot:start *site-acceptor*)))
 
 

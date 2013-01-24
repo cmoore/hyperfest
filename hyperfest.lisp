@@ -2,21 +2,25 @@
 
 (in-package #:hyperfest)
 
-(defparameter *site-acceptor* nil)
+(defparameter *hyperfest.site-acceptor* nil)
 
 (defun resource-path (path)
+  "Return the full pathname for a directory under a project."
   (asdf:system-relative-pathname :hyperfest path))
 
 (defun stop-server ()
-  (hunchentoot:stop *site-acceptor*))
+  (and *hyperfest.site-acceptor*
+       (ignore-errors
+         (hunchentoot:stop *hyperfest.site-acceptor*))))
 
 (defun start-server (&key (port 8080))
-  (or *site-acceptor*
+  (or *hyperfest.site-acceptor*
       (progn
-        (setq *site-acceptor* (make-instance 'hunchentoot:easy-acceptor
-                                             :port port
-                                             :document-root (resource-path "./hyperspec/")))
-        (hunchentoot:start *site-acceptor*))))
+        (setq *hyperfest.site-acceptor*
+              (make-instance 'hunchentoot:easy-acceptor
+                             :port port
+                             :document-root (resource-path "./hyperspec/")))
+        (hunchentoot:start *hyperfest.site-acceptor*))))
 
 (defun site-index ()
   (redirect "/Front/X_Master.htm"))

@@ -1,9 +1,9 @@
 ;;;; package.lisp
 
 (defpackage #:hyperfest
-  (:nicknames #:hf)
   (:use #:cl
-        #:hunchentoot
-        #:cl-who)
-  (:export #:hf-start))
+        #:cl-who
+        #:hunchentoot)
+  (:export #:start-server
+           #:stop-server))
 
